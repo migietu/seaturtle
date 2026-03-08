@@ -22,19 +22,46 @@
         const { useState, useEffect, useCallback, useRef } = React;
 
         // --- 自訂 SVG 圖示元件 ---
-        const Turtle = ({ className }) => (
-          <svg viewBox="0 0 100 100" className={`drop-shadow-lg ${className}`} style={{ filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.3))' }}>
-            <path d="M 20 40 C 5 30 10 10 30 25 Z" fill="#4ade80" opacity="0.9" />
-            <path d="M 80 40 C 95 30 90 10 70 25 Z" fill="#4ade80" opacity="0.9" />
-            <path d="M 30 70 C 15 85 20 95 40 80 Z" fill="#22c55e" opacity="0.8" />
-            <path d="M 70 70 C 85 85 80 95 60 80 Z" fill="#22c55e" opacity="0.8" />
-            <ellipse cx="50" cy="20" rx="15" ry="18" fill="#4ade80" />
-            <circle cx="44" cy="15" r="2" fill="#064e3b" />
-            <circle cx="56" cy="15" r="2" fill="#064e3b" />
-            <ellipse cx="50" cy="55" rx="30" ry="35" fill="#166534" />
-            <path d="M 50 20 L 35 40 L 50 60 L 65 40 Z" fill="#14532d" opacity="0.7" />
-            <path d="M 35 40 L 25 60 L 50 80 L 50 60 Z" fill="#14532d" opacity="0.5" />
-            <path d="M 65 40 L 75 60 L 50 80 L 50 60 Z" fill="#14532d" opacity="0.6" />
+        // 更新：更真實的海龜造型，並支援自訂顏色
+        const Turtle = ({ className, baseColor = "#4ade80", shellColor = "#166534", scuteColor = "#064e3b", skinDetail = "#22c55e" }) => (
+          <svg viewBox="0 0 100 100" className={`drop-shadow-lg ${className}`} style={{ filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.4))' }}>
+            {/* 前肢 (Front Flippers) */}
+            <path d="M 40 30 C 15 10 0 35 15 55 C 25 60 35 40 40 35 Z" fill={baseColor} />
+            <path d="M 60 30 C 85 10 100 35 85 55 C 75 60 65 40 60 35 Z" fill={baseColor} />
+            
+            {/* 後肢 (Back Flippers) */}
+            <path d="M 35 65 C 15 80 20 95 35 85 C 45 80 40 70 35 65 Z" fill={baseColor} />
+            <path d="M 65 65 C 85 80 80 95 65 85 C 55 80 60 70 65 65 Z" fill={baseColor} />
+
+            {/* 尾巴 (Tail) */}
+            <path d="M 45 75 L 50 92 L 55 75 Z" fill={baseColor} />
+
+            {/* 頭部 (Head) */}
+            <path d="M 42 25 C 40 5 60 5 58 25 Z" fill={baseColor} />
+            
+            {/* 眼睛 (Eyes) */}
+            <circle cx="46" cy="14" r="2" fill="#111" />
+            <circle cx="54" cy="14" r="2" fill="#111" />
+            <circle cx="45.5" cy="13.5" r="0.8" fill="#fff" />
+            <circle cx="53.5" cy="13.5" r="0.8" fill="#fff" />
+
+            {/* 四肢皮膚紋理 (Skin Details) */}
+            <path d="M 22 35 L 18 40 M 28 40 L 22 46 M 15 48 L 18 52" stroke={skinDetail} strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+            <path d="M 78 35 L 82 40 M 72 40 L 78 46 M 85 48 L 82 52" stroke={skinDetail} strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+
+            {/* 龜殼外圈 (Shell Outer) */}
+            <ellipse cx="50" cy="50" rx="28" ry="34" fill={shellColor} />
+            
+            {/* 龜殼內圈邊界 (Shell Inner Rim) */}
+            <ellipse cx="50" cy="50" rx="24" ry="30" fill={scuteColor} />
+
+            {/* 龜殼真實盾板紋路 (Scutes Hexagon Pattern) */}
+            <path d="M 50 22 L 58 30 L 58 42 L 50 48 L 42 42 L 42 30 Z" fill={shellColor} stroke={scuteColor} strokeWidth="2.5" strokeLinejoin="round" />
+            <path d="M 50 48 L 58 54 L 58 66 L 50 74 L 42 66 L 42 54 Z" fill={shellColor} stroke={scuteColor} strokeWidth="2.5" strokeLinejoin="round" />
+            <path d="M 42 30 L 30 36 L 28 48 L 42 42 Z" fill={shellColor} stroke={scuteColor} strokeWidth="2.5" strokeLinejoin="round" />
+            <path d="M 58 30 L 70 36 L 72 48 L 58 42 Z" fill={shellColor} stroke={scuteColor} strokeWidth="2.5" strokeLinejoin="round" />
+            <path d="M 42 66 L 30 60 L 28 48 L 42 54 Z" fill={shellColor} stroke={scuteColor} strokeWidth="2.5" strokeLinejoin="round" />
+            <path d="M 58 66 L 70 60 L 72 48 L 58 54 Z" fill={shellColor} stroke={scuteColor} strokeWidth="2.5" strokeLinejoin="round" />
           </svg>
         );
 
@@ -49,6 +76,54 @@
                 <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
                 <stop offset="70%" stopColor="#f472b6" stopOpacity="0.6" />
                 <stop offset="100%" stopColor="#db2777" stopOpacity="0.3" />
+              </radialGradient>
+            </defs>
+          </svg>
+        );
+
+        const LongTentacleJellyfish = ({ className }) => (
+          <svg viewBox="0 0 100 150" className={`drop-shadow-md ${className}`}>
+            {/* 超長觸手 */}
+            <path d="M 30 50 Q 15 90 25 120 T 15 145" stroke="#e9d5ff" strokeWidth="2" fill="none" opacity="0.6" />
+            <path d="M 40 50 Q 25 90 40 130 T 30 150" stroke="#d8b4fe" strokeWidth="2.5" fill="none" opacity="0.7" />
+            <path d="M 50 50 Q 65 90 50 125 T 55 145" stroke="#c084fc" strokeWidth="3" fill="none" opacity="0.8" />
+            <path d="M 60 50 Q 75 90 60 130 T 70 150" stroke="#d8b4fe" strokeWidth="2.5" fill="none" opacity="0.7" />
+            <path d="M 70 50 Q 85 90 75 120 T 85 145" stroke="#e9d5ff" strokeWidth="2" fill="none" opacity="0.6" />
+            
+            {/* 傘狀頭部 */}
+            <path d="M 20 50 C 20 15 80 15 80 50 C 80 55 20 55 20 50 Z" fill="url(#longJellyGrad)" opacity="0.8" />
+            <defs>
+              <radialGradient id="longJellyGrad" cx="50%" cy="40%" r="50%" fx="50%" fy="30%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+                <stop offset="70%" stopColor="#a855f7" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#7e22ce" stopOpacity="0.4" />
+              </radialGradient>
+            </defs>
+          </svg>
+        );
+
+        const EggYolkJellyfish = ({ className }) => (
+          <svg viewBox="0 0 100 100" className={`drop-shadow-md ${className}`}>
+            {/* 短短的叢生觸手 */}
+            <path d="M 35 50 Q 30 70 40 85" stroke="#c084fc" strokeWidth="4" strokeLinecap="round" fill="none" opacity="0.8" />
+            <path d="M 45 50 Q 40 75 50 90" stroke="#60a5fa" strokeWidth="5" strokeLinecap="round" fill="none" opacity="0.9" />
+            <path d="M 50 50 Q 55 80 55 95" stroke="#818cf8" strokeWidth="6" strokeLinecap="round" fill="none" opacity="0.9" />
+            <path d="M 55 50 Q 60 75 60 90" stroke="#34d399" strokeWidth="5" strokeLinecap="round" fill="none" opacity="0.8" />
+            <path d="M 65 50 Q 70 70 60 85" stroke="#c084fc" strokeWidth="4" strokeLinecap="round" fill="none" opacity="0.8" />
+            
+            {/* 扁平的透明傘蓋 */}
+            <ellipse cx="50" cy="50" rx="40" ry="18" fill="#ffffff" opacity="0.5" />
+            <ellipse cx="50" cy="50" rx="35" ry="15" fill="#f8fafc" opacity="0.6" />
+            
+            {/* 蛋黃中心 */}
+            <ellipse cx="50" cy="46" rx="18" ry="12" fill="url(#eggYolkGrad)" />
+            <ellipse cx="46" cy="43" rx="6" ry="4" fill="#ffffff" opacity="0.4" />
+            
+            <defs>
+              <radialGradient id="eggYolkGrad" cx="50%" cy="40%" r="50%" fx="40%" fy="30%">
+                <stop offset="0%" stopColor="#fef08a" stopOpacity="1" />
+                <stop offset="60%" stopColor="#f59e0b" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#b45309" stopOpacity="0.8" />
               </radialGradient>
             </defs>
           </svg>
@@ -130,6 +205,59 @@
           </svg>
         );
 
+        const Starfish = ({ className, color = "#f43f5e" }) => (
+          <svg viewBox="0 0 100 100" className={`drop-shadow-lg ${className}`}>
+            <path d="M 50 10 L 62 38 L 92 38 L 68 56 L 77 85 L 50 68 L 23 85 L 32 56 L 8 38 L 38 38 Z" fill={color} />
+            <circle cx="50" cy="50" r="3" fill="#fff" opacity="0.6"/>
+            <circle cx="50" cy="38" r="2" fill="#fff" opacity="0.6"/>
+            <circle cx="40" cy="58" r="2" fill="#fff" opacity="0.6"/>
+            <circle cx="60" cy="58" r="2" fill="#fff" opacity="0.6"/>
+            <circle cx="50" cy="68" r="2" fill="#fff" opacity="0.6"/>
+          </svg>
+        );
+
+        const Lobster = ({ className }) => (
+          <svg viewBox="0 0 100 100" className={`drop-shadow-lg ${className}`}>
+            {/* 觸角 */}
+            <path d="M 75 40 Q 90 20 95 35" stroke="#ef4444" strokeWidth="2" fill="none" strokeLinecap="round" />
+            <path d="M 75 60 Q 90 80 95 65" stroke="#ef4444" strokeWidth="2" fill="none" strokeLinecap="round" />
+            
+            {/* 腳 */}
+            <path d="M 40 30 L 35 15" stroke="#ef4444" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M 50 30 L 45 15" stroke="#ef4444" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M 60 30 L 55 15" stroke="#ef4444" strokeWidth="3" fill="none" strokeLinecap="round" />
+            
+            <path d="M 40 70 L 35 85" stroke="#ef4444" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M 50 70 L 45 85" stroke="#ef4444" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M 60 70 L 55 85" stroke="#ef4444" strokeWidth="3" fill="none" strokeLinecap="round" />
+
+            {/* 身體主幹 */}
+            <path d="M 25 50 Q 50 30 75 45 L 75 55 Q 50 70 25 50 Z" fill="#ef4444" />
+            
+            {/* 尾巴 */}
+            <path d="M 25 50 Q 10 35 5 50 Q 10 65 25 50 Z" fill="#dc2626" />
+            
+            {/* 身體紋路 */}
+            <path d="M 45 38 L 45 62" stroke="#b91c1c" strokeWidth="2" fill="none" opacity="0.5" />
+            <path d="M 55 40 L 55 60" stroke="#b91c1c" strokeWidth="2" fill="none" opacity="0.5" />
+            <path d="M 65 42 L 65 58" stroke="#b91c1c" strokeWidth="2" fill="none" opacity="0.5" />
+
+            {/* 大螯 (上) */}
+            <path d="M 65 35 Q 85 10 95 25 Q 80 35 65 35" fill="#ef4444" />
+            <path d="M 95 25 L 85 28" stroke="#dc2626" strokeWidth="2" fill="none" />
+            
+            {/* 大螯 (下) */}
+            <path d="M 65 65 Q 85 90 95 75 Q 80 65 65 65" fill="#ef4444" />
+            <path d="M 95 75 L 85 72" stroke="#dc2626" strokeWidth="2" fill="none" />
+
+            {/* 眼睛 */}
+            <circle cx="72" cy="42" r="3" fill="#000" />
+            <circle cx="73" cy="41" r="1" fill="#fff" />
+            <circle cx="72" cy="58" r="3" fill="#000" />
+            <circle cx="73" cy="57" r="1" fill="#fff" />
+          </svg>
+        );
+
         const PlasticBag = ({ className, onClick }) => (
           <div onClick={onClick} className={`cursor-pointer transform hover:scale-110 transition-transform ${className}`}>
             <svg viewBox="0 0 100 100" className="drop-shadow-sm w-full h-full">
@@ -150,25 +278,55 @@
           const [bags, setBags] = useState([]);
           const [isMusicOn, setIsMusicOn] = useState(true);
           const audioRef = useRef(null);
+          const audioCtxRef = useRef(null); // 新增：共用的音效引擎
           
-          const turtles = useRef([...Array(3)].map(() => ({
-            id: Math.random(),
-            top: `${Math.random() * 60 + 10}%`,
-            animationDuration: `${Math.random() * 15 + 15}s`,
-            animationDelay: `-${Math.random() * 10}s`,
-            scale: Math.random() * 0.5 + 0.8
-          })));
+          const turtles = useRef([...Array(3)].map((_, index) => {
+            // 預設綠色海龜主題
+            let theme = {
+              baseColor: "#4ade80", 
+              skinDetail: "#22c55e",
+              shellColor: "#166534", 
+              scuteColor: "#064e3b"
+            };
+            
+            // 將第3隻海龜 (index 2) 變成紅色的
+            if (index === 2) {
+              theme = {
+                baseColor: "#fca5a5", // 粉紅色皮膚
+                skinDetail: "#ef4444", // 紅色紋理
+                shellColor: "#9f1239", // 深紅色龜殼
+                scuteColor: "#4c0519"  // 極深紅縫隙
+              };
+            }
 
-          const jellyfishes = useRef([...Array(15)].map(() => ({
-            id: Math.random(),
-            left: `${Math.random() * 80 + 10}%`,
-            top: `${Math.random() * 60 + 20}%`,
-            animClass: `drift-anim-${Math.floor(Math.random() * 4) + 1}`,
-            animationDuration: `${Math.random() * 6 + 8}s`,
-            animationDelay: `-${Math.random() * 5}s`,
-            scale: Math.random() * 0.9 + 0.3,
-            hueRotate: `${Math.floor(Math.random() * 360)}deg`
-          })));
+            return {
+              id: Math.random(),
+              top: `${Math.random() * 60 + 10}%`,
+              animationDuration: `${Math.random() * 15 + 15}s`,
+              animationDelay: `-${Math.random() * 10}s`,
+              scale: Math.random() * 0.5 + 0.8,
+              theme: theme
+            };
+          }));
+
+          const jellyfishes = useRef([...Array(15)].map(() => {
+            // 隨機決定水母種類，加入長觸手和蛋黃水母
+            const types = ['normal', 'normal', 'normal', 'long', 'egg'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            
+            return {
+              id: Math.random(),
+              type: type, // 紀錄種類
+              left: `${Math.random() * 80 + 10}%`,
+              top: `${Math.random() * 60 + 20}%`,
+              animClass: `drift-anim-${Math.floor(Math.random() * 4) + 1}`,
+              animationDuration: `${Math.random() * 15 + 15}s`, // 改為 15~30 秒，大幅減緩游動速度
+              animationDelay: `-${Math.random() * 10}s`,
+              scale: type === 'egg' ? Math.random() * 0.4 + 0.5 : Math.random() * 0.6 + 0.3,
+              // 蛋黃水母不改變色相，保持蛋黃色
+              hueRotate: type === 'egg' ? '0deg' : `${Math.floor(Math.random() * 360)}deg`
+            };
+          }));
 
           const fishes = useRef([...Array(8)].map(() => {
             const colors = [
@@ -190,11 +348,44 @@
             };
           }));
 
+          const starfishes = useRef([...Array(6)].map(() => ({
+            id: Math.random(),
+            left: `${Math.random() * 90 + 5}%`,
+            bottom: `${Math.random() * 10 + 2}%`,
+            scale: Math.random() * 0.4 + 0.4,
+            rotation: Math.random() * 360,
+            color: ['#f43f5e', '#fb923c', '#f87171', '#fcd34d'][Math.floor(Math.random() * 4)]
+          })));
+
+          const lobster = useRef({
+            bottom: `${Math.random() * 5 + 2}%`,
+            scale: Math.random() * 0.3 + 0.7,
+            animationDuration: `${Math.random() * 20 + 25}s`,
+            animationDelay: `-${Math.random() * 15}s`
+          });
+
+          // 新增：取得並管理共用的音效引擎
+          const getAudioCtx = useCallback(() => {
+            try {
+              if (!audioCtxRef.current) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                  audioCtxRef.current = new AudioContext();
+                }
+              }
+              if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+                audioCtxRef.current.resume();
+              }
+              return audioCtxRef.current;
+            } catch (e) {
+              return null;
+            }
+          }, []);
+
           const playBubbleSound = useCallback(() => {
             try {
-              const AudioContext = window.AudioContext || window.webkitAudioContext;
-              if (!AudioContext) return;
-              const ctx = new AudioContext();
+              const ctx = getAudioCtx();
+              if (!ctx) return;
               const osc = ctx.createOscillator();
               const gain = ctx.createGain();
               osc.connect(gain);
@@ -207,14 +398,14 @@
               osc.start();
               osc.stop(ctx.currentTime + 0.1);
             } catch (e) {
-              console.log("Audio not supported or interaction needed first.");
+              console.log("Audio not supported.", e);
             }
-          }, []);
+          }, [getAudioCtx]);
 
           const playWinSound = useCallback(() => {
             try {
-              const AudioContext = window.AudioContext || window.webkitAudioContext;
-              const ctx = new AudioContext();
+              const ctx = getAudioCtx();
+              if (!ctx) return;
               const osc = ctx.createOscillator();
               const gain = ctx.createGain();
               osc.connect(gain);
@@ -229,12 +420,12 @@
               osc.start();
               osc.stop(ctx.currentTime + 0.8);
             } catch(e){}
-          }, []);
+          }, [getAudioCtx]);
 
           const playLoseSound = useCallback(() => {
             try {
-              const AudioContext = window.AudioContext || window.webkitAudioContext;
-              const ctx = new AudioContext();
+              const ctx = getAudioCtx();
+              if (!ctx) return;
               const osc = ctx.createOscillator();
               const gain = ctx.createGain();
               osc.connect(gain);
@@ -247,17 +438,19 @@
               osc.start();
               osc.stop(ctx.currentTime + 1);
             } catch(e){}
-          }, []);
+          }, [getAudioCtx]);
 
           const startGame = () => {
-            const newBags = [...Array(13)].map((_, index) => ({
+            const newBags = [...Array(15)].map((_, index) => ({
               id: index,
               x: Math.random() * 80 + 10,
               y: Math.random() * 70 + 15,
               active: true,
               animClass: `bag-float-anim-${Math.floor(Math.random() * 3) + 1}`,
               floatDuration: Math.random() * 2.5 + 2,
-              floatDelay: Math.random() * -5
+              floatDelay: Math.random() * -5,
+              rotation: Math.random() > 0.5 ? (Math.random() * 30 - 15) : (180 + Math.random() * 30 - 15),
+              scale: Math.random() * 0.4 + 0.5 // 將大小限制在 0.5 到 0.9 倍之間
             }));
             setBags(newBags);
             setTimeLeft(30);
@@ -317,9 +510,9 @@
           return (
             <div 
               className="relative w-full h-screen overflow-hidden font-sans select-none bg-cover bg-center bg-no-repeat bg-blue-400"
-              style={{ backgroundImage: "url('./SEA.png')" }}
+              style={{ backgroundImage: "url('SEA.png')" }}
             >
-              <audio ref={audioRef} src="./bgm.mp3" loop preload="auto" />
+              <audio ref={audioRef} src="bgm.mp3" loop preload="auto" />
 
               <button 
                 onClick={toggleMusic}
@@ -401,6 +594,16 @@
                   50% { transform: translateY(-15px) rotate(2deg); }
                 }
 
+                @keyframes lobsterWalkAnim {
+                  0% { transform: translateX(-150px) scale(var(--scale)); }
+                  100% { transform: translateX(120vw) scale(var(--scale)); }
+                }
+                @keyframes lobsterScuttle {
+                  0%, 100% { transform: translateY(0) rotate(0deg); }
+                  25% { transform: translateY(-3px) rotate(-2deg); }
+                  75% { transform: translateY(-3px) rotate(2deg); }
+                }
+
                 .turtle-anim { animation: swimRight linear infinite; }
                 .fish-right-anim { animation: swimFishRight linear infinite; }
                 .fish-left-anim { animation: swimFishLeft linear infinite; }
@@ -408,6 +611,9 @@
                 .sparkle-anim { animation: sparkleAnim 2s ease-in-out infinite; }
                 .mermaid-anim { animation: mermaidFloat 6s ease-in-out infinite; }
                 
+                .lobster-walk-anim { animation: lobsterWalkAnim linear infinite; }
+                .lobster-scuttle-anim { animation: lobsterScuttle 0.5s ease-in-out infinite; }
+
                 .bag-float-anim-1 { animation: naturalFloat1 ease-in-out infinite; }
                 .bag-float-anim-2 { animation: naturalFloat2 ease-in-out infinite; }
                 .bag-float-anim-3 { animation: naturalFloat3 ease-in-out infinite; }
@@ -424,6 +630,35 @@
 
               <div className="absolute bottom-0 w-full h-1/3 sea-bed opacity-70 pointer-events-none z-0"></div>
               
+              {/* 海星群 */}
+              {starfishes.current.map(star => (
+                <div key={star.id} className="absolute z-10 pointer-events-none starfish-wobble-anim" style={{
+                  left: star.left,
+                  bottom: star.bottom,
+                  width: '60px', height: '60px',
+                  '--scale': star.scale,
+                  '--rot': `${star.rotation}deg`,
+                  animationDuration: star.animationDuration,
+                  animationDelay: star.animationDelay
+                }}>
+                  <Starfish className="w-full h-full" color={star.color} />
+                </div>
+              ))}
+
+              {/* 龍蝦 */}
+              <div className="absolute z-10 pointer-events-none lobster-walk-anim" style={{
+                left: 0,
+                bottom: lobster.current.bottom,
+                width: '120px', height: '120px',
+                '--scale': lobster.current.scale,
+                animationDuration: lobster.current.animationDuration,
+                animationDelay: lobster.current.animationDelay
+              }}>
+                <div className="w-full h-full lobster-scuttle-anim">
+                  <Lobster className="w-full h-full" />
+                </div>
+              </div>
+
               {/* 美人魚位置調整：從 right-10 改為 right-[25%]，讓她移向中央偏右 */}
               <div 
                 className="absolute bottom-4 right-[25%] pointer-events-none z-20 mermaid-anim" 
@@ -447,7 +682,14 @@
                     animationDelay: fish.animationDelay
                   }}
                 >
-                  <Fish className="w-full h-full" color1={fish.color1} color2={fish.color2} />
+                  {/* 根據種類顯示不同的魚 */}
+                  {fish.type === 'nemo' ? (
+                    <Clownfish className="w-full h-full" />
+                  ) : fish.type === 'dory' ? (
+                    <BlueTang className="w-full h-full" />
+                  ) : (
+                    <Fish className="w-full h-full" color1={fish.color1} color2={fish.color2} />
+                  )}
                 </div>
               ))}
 
@@ -465,7 +707,13 @@
                     animationDelay: turtle.animationDelay
                   }}
                 >
-                  <Turtle className="w-full h-full" />
+                  <Turtle 
+                    className="w-full h-full" 
+                    baseColor={turtle.theme.baseColor}
+                    shellColor={turtle.theme.shellColor}
+                    scuteColor={turtle.theme.scuteColor}
+                    skinDetail={turtle.theme.skinDetail}
+                  />
                 </div>
               ))}
 
@@ -476,8 +724,8 @@
                   style={{
                     top: jelly.top,
                     left: jelly.left,
-                    width: '80px',
-                    height: '80px',
+                    width: jelly.type === 'long' ? '80px' : '80px',
+                    height: jelly.type === 'long' ? '120px' : '80px', // 長水母給予更長的容器
                     transform: `scale(${jelly.scale})`,
                     filter: `hue-rotate(${jelly.hueRotate})`
                   }}
@@ -489,7 +737,13 @@
                       animationDelay: jelly.animationDelay
                     }}
                   >
-                    <Jellyfish className="w-full h-full" />
+                    {jelly.type === 'egg' ? (
+                      <EggYolkJellyfish className="w-full h-full" />
+                    ) : jelly.type === 'long' ? (
+                      <LongTentacleJellyfish className="w-full h-full" />
+                    ) : (
+                      <Jellyfish className="w-full h-full" />
+                    )}
                   </div>
                 </div>
               ))}
@@ -514,7 +768,8 @@
                   className="absolute z-30 w-24 h-24"
                   style={{
                     left: `${bag.x}%`,
-                    top: `${bag.y}%`
+                    top: `${bag.y}%`,
+                    transform: `scale(${bag.scale})`
                   }}
                 >
                    <div 
@@ -525,7 +780,9 @@
                     }}
                   >
                     {bag.active && (
-                      <PlasticBag onClick={() => handleBagClick(bag.id)} className="w-full h-full" />
+                      <div style={{ transform: `rotate(${bag.rotation}deg)`, width: '100%', height: '100%' }}>
+                        <PlasticBag onClick={() => handleBagClick(bag.id)} className="w-full h-full" />
+                      </div>
                     )}
                   </div>
                 </div>
